@@ -30,12 +30,21 @@ class UI {
         if(element.name==="delete") {
             element.parentElement.parentElement.remove();
         }
+        this.showMessage('Producto borrado', 'danger')
     }
 
-    static showMessage() {
-
+    static showMessage(message, cssClass) {
+        const div = document.createElement('div');
+        div.className = `alert alert-${cssClass} mt-2`;
+        div.appendChild(document.createTextNode(message));
+        //Mostramos el mensaje en el container
+        const container = document.querySelector('.container');
+        const app = document.querySelector('#App');
+        container.insertBefore(div, app);//Se agrega el div creado antes del id App
+        setTimeout(() => {
+            document.querySelector('.alert').remove();
+        }, 2000);
     }
-
 }
 //DOM EVENTS
 
@@ -47,9 +56,11 @@ document.getElementById('product-form').addEventListener('submit', e => {
     const product = new Product(name, price, year);
     UI.addProduct(product);
     UI.resetForm();//limpio los datos del formulario para poder ingresar nuevos datos
+    UI.showMessage('Producto agregado', 'success');
     e.preventDefault();//este evento cancela el autorefresh del formulario. El auto refresh se utiliza para luego recibir la respuesta del servidor
 });
 
 document.getElementById('product-list').addEventListener('click', e => {
     UI.deleteProduct(e.target);
 });
+
