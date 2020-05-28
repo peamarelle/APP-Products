@@ -30,7 +30,7 @@ class UI {
         if(element.name==="delete") {
             element.parentElement.parentElement.remove();
         }
-        this.showMessage('Producto borrado', 'danger')
+        this.showMessage('Producto borrado', 'info')
     }
 
     static showMessage(message, cssClass) {
@@ -54,6 +54,10 @@ document.getElementById('product-form').addEventListener('submit', e => {
     const year = document.getElementById('year').value;
 
     const product = new Product(name, price, year);
+
+    if(product.name ==='' || product.price==='') {
+        return UI.showMessage('Por favor ingrese valores correctos en el formulario', 'danger');
+    }
     UI.addProduct(product);
     UI.resetForm();//limpio los datos del formulario para poder ingresar nuevos datos
     UI.showMessage('Producto agregado', 'success');
